@@ -67,6 +67,10 @@ struct ContentView: View {
                         Rectangle()
                             .frame(height: 50)
                             .foregroundStyle(Color.green)
+                        
+                        Rectangle()
+                            .frame(height: 50)
+                            .foregroundStyle(Color.red)
                     }
                 }
             )
