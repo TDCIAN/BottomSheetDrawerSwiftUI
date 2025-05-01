@@ -40,7 +40,7 @@ struct ContentView: View {
                 showBottomSheet: $showBottomSheet,
                 bottomSafeAreaHeight: $bottomSafeAreaHeight,
                 threshold: 3,
-                content: {
+                content: { // MARK: Config this closure with your customized content.
                     VStack(spacing: 0) {
                         Rectangle()
                             .frame(height: 50)

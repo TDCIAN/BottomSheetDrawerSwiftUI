@@ -81,6 +81,7 @@ struct BottomSheetDrawerView<Content: View>: View {
                     )
                     .onPreferenceChange(ContentHeightKey.self) { contentHeight in
                         self.contentHeight = contentHeight
+                        print("### contentHeight: \(self.contentHeight), bottomSafeAreaHeight: \(bottomSafeAreaHeight)")
                     }
                     .frame(maxHeight: .infinity, alignment: .top)
                 }
