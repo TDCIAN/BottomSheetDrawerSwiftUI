@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @State private var showBottomSheet: Bool = false
+    @State private var bottomSafeAreaHeight: CGFloat = UIApplication.shared.rootViewController?.view.safeAreaInsets.bottom ?? 0
     
     var body: some View {
         ZStack {
@@ -37,6 +38,7 @@ struct ContentView: View {
             
             BottomSheetDrawerView(
                 showBottomSheet: $showBottomSheet,
+                bottomSafeAreaHeight: $bottomSafeAreaHeight,
                 threshold: 3,
                 content: {
                     VStack(spacing: 0) {
@@ -71,6 +73,18 @@ struct ContentView: View {
                         Rectangle()
                             .frame(height: 50)
                             .foregroundStyle(Color.red)
+                        
+                        Rectangle()
+                            .frame(height: 50)
+                            .foregroundStyle(Color.blue)
+                        
+                        Rectangle()
+                            .frame(height: 50)
+                            .foregroundStyle(Color.green)
+                        
+                        Rectangle()
+                            .frame(height: 50)
+                            .foregroundStyle(Color.yellow)
                     }
                 }
             )

@@ -13,9 +13,8 @@ struct BottomSheetDrawerView<Content: View>: View {
     @State private var lastOffset: CGFloat = 0
     @GestureState private var gestureOffset: CGFloat = 0
     @State private var contentHeight: CGFloat = 0
-    
-    private let bottomSafeAreaHeight: CGFloat = UIApplication.shared.rootViewController?.view.safeAreaInsets.bottom ?? 0
-    
+
+    @Binding var bottomSafeAreaHeight: CGFloat
     @Binding var showBottomSheet: Bool
     
     let content: () -> Content
@@ -24,11 +23,13 @@ struct BottomSheetDrawerView<Content: View>: View {
     
     init(
         showBottomSheet: Binding<Bool>,
+        bottomSafeAreaHeight: Binding<CGFloat>,
         threshold: CGFloat = 3,
         @ViewBuilder content: @escaping () -> Content
         
     ) {
         self._showBottomSheet = showBottomSheet
+        self._bottomSafeAreaHeight = bottomSafeAreaHeight
         self.threshold = threshold
         self.content = content
     }
@@ -69,7 +70,6 @@ struct BottomSheetDrawerView<Content: View>: View {
                             .padding(.top, 12)
                         
                         content()
-                            .border(Color.red, width: 1)
                         
                         Spacer().frame(height: bottomSafeAreaHeight)
                     }
@@ -86,7 +86,7 @@ struct BottomSheetDrawerView<Content: View>: View {
                 }
                 .offset(y: (screenHeight + bottomSafeAreaHeight) - contentHeight)
                 .offset(y: {
-                    if self.showBottomSheet {
+                    if showBottomSheet {
                         if -bottomSheetOffset > 0 {
                             if bottomSheetOffset <= screenHeight {
                                 return bottomSheetOffset
@@ -97,7 +97,7 @@ struct BottomSheetDrawerView<Content: View>: View {
                             return bottomSheetOffset - bottomSafeAreaHeight
                         }
                     } else {
-                        return (screenHeight + bottomSafeAreaHeight) - contentHeight
+                        return (screenHeight + bottomSafeAreaHeight) - (screenHeight - contentHeight)
                     }
                 }())
                 .gesture(
