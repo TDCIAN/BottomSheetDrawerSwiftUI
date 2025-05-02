@@ -14,7 +14,6 @@ struct BottomSheetDrawerView<Content: View>: View {
     @GestureState private var gestureOffset: CGFloat = 0
     @State private var contentHeight: CGFloat = 0
 
-    @Binding var bottomSafeAreaHeight: CGFloat
     @Binding var showBottomSheet: Bool
     
     let content: () -> Content
@@ -23,13 +22,11 @@ struct BottomSheetDrawerView<Content: View>: View {
     
     init(
         showBottomSheet: Binding<Bool>,
-        bottomSafeAreaHeight: Binding<CGFloat>,
         threshold: CGFloat = 3,
         @ViewBuilder content: @escaping () -> Content
         
     ) {
         self._showBottomSheet = showBottomSheet
-        self._bottomSafeAreaHeight = bottomSafeAreaHeight
         self.threshold = threshold
         self.content = content
     }
@@ -70,8 +67,6 @@ struct BottomSheetDrawerView<Content: View>: View {
                             .padding(.top, 12)
                         
                         content()
-                        
-                        Spacer().frame(height: bottomSafeAreaHeight)
                     }
                     .background(
                         GeometryReader { contentProxy in
@@ -81,24 +76,24 @@ struct BottomSheetDrawerView<Content: View>: View {
                     )
                     .onPreferenceChange(ContentHeightKey.self) { contentHeight in
                         self.contentHeight = contentHeight
-                        print("### contentHeight: \(self.contentHeight), bottomSafeAreaHeight: \(bottomSafeAreaHeight)")
+                        print("### contentHeight: \(self.contentHeight)")
                     }
                     .frame(maxHeight: .infinity, alignment: .top)
                 }
-                .offset(y: (screenHeight + bottomSafeAreaHeight) - contentHeight)
+                .offset(y: screenHeight - contentHeight)
                 .offset(y: {
                     if showBottomSheet {
-                        if -bottomSheetOffset > 0 {
+                        if -bottomSheetOffset >= 0 {
                             if bottomSheetOffset <= screenHeight {
                                 return bottomSheetOffset
                             } else {
                                 return screenHeight
                             }
                         } else {
-                            return bottomSheetOffset - bottomSafeAreaHeight
+                            return bottomSheetOffset
                         }
                     } else {
-                        return (screenHeight + bottomSafeAreaHeight) - (screenHeight - contentHeight)
+                        return (screenHeight) - (screenHeight - contentHeight)
                     }
                 }())
                 .gesture(

@@ -38,7 +38,6 @@ struct ContentView: View {
             
             BottomSheetDrawerView(
                 showBottomSheet: $showBottomSheet,
-                bottomSafeAreaHeight: $bottomSafeAreaHeight,
                 threshold: 3,
                 content: { // MARK: Config this closure with your customized content.
                     VStack(spacing: 0) {
@@ -85,6 +84,9 @@ struct ContentView: View {
                         Rectangle()
                             .frame(height: 50)
                             .foregroundStyle(Color.yellow)
+                        
+                        Spacer()
+                            .frame(height: self.bottomSafeAreaHeight)
                     }
                 }
             )
